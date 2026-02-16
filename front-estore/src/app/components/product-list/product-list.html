@@ -1,22 +1,39 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Espace Administration</h2>
-  
-  <app-add-product (productAdded)="loadProducts()"></app-add-product>
-  
-  <hr class="my-5">
-  
-  <h3 class="mb-4">Liste des produits en stock</h3>
-  <div class="row">
-    <div class="col-md-4" *ngFor="let product of products"> 
-      <div class="card mb-4 shadow-sm border-danger">
-        <div class="card-body">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="card-text">{{ product.price }} €</p>
-          <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id!)">
-            <i class="bi bi-trash"></i> Supprimer
-          </button>
-        </div>
-      </div>
-    </div>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Administration des Produits</h2>
+    <span *ngIf="isAdmin()" class="badge bg-danger">Mode Administrateur</span>
+  </div>
+
+  <div *ngIf="isAdmin()" class="mb-5 p-3 border rounded bg-light shadow-sm">
+    <app-add-product (productAdded)="loadProducts()"></app-add-product>
+  </div>
+
+  <div class="table-responsive bg-white shadow-sm rounded p-3">
+    <table class="table table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Image</th>
+          <th>Nom</th>
+          <th>Catégorie</th>
+          <th>Prix</th>
+          <th *ngIf="isAdmin()" class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>
+            <img [src]="getSafeUrl(product.imageUrl)" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+          </td>
+          <td><strong>{{ product.name }}</strong></td>
+          <td><span class="badge bg-secondary">{{ product.category }}</span></td>
+          <td class="text-success fw-bold">{{ product.price }} €</td>
+          <td *ngIf="isAdmin()" class="text-center">
+            <button (click)="deleteProduct(product.id)" class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-trash"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

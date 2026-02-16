@@ -1,29 +1,47 @@
-<div class="container py-4">
-  <h2 class="text-center mb-5 fw-bold text-uppercase" style="letter-spacing: 2px;">
-    Nos Produits High-Tech
-  </h2>
-
-  <div class="row g-4">
-    <div class="col-12 col-md-6 col-lg-4" *ngFor="let product of products">
-      <div class="card h-100 shadow-sm border-0 transition-hover">
-        <img [src]="product.imageUrl || 'https://via.placeholder.com/300x200?text=Produit'" 
-             class="card-img-top p-3" 
-             [alt]="product.name"
-             style="height: 200px; object-fit: contain;">
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4 col-lg-3 mb-4" *ngFor="let product of products">
+      <div class="card h-100 shadow-sm border-0 text-center product-card">
         
-        <div class="card-body d-flex flex-column">
-          <div class="mb-2">
-            <span class="badge bg-light text-dark border">{{ product.category }}</span>
-          </div>
-          <h5 class="card-title fw-bold">{{ product.name }}</h5>
-          <p class="card-text text-muted small flex-grow-1">{{ product.description }}</p>
+        <span *ngIf="product.category" class="badge bg-primary position-absolute top-0 end-0 m-2 product-category">
+          {{ product.category }}
+        </span>
+
+        <div class="card-img-top d-flex align-items-center justify-content-center p-3" style="height: 180px;">
+          <img *ngIf="product.imageUrl" 
+               [src]="getSafeUrl(product.imageUrl)" 
+               class="img-fluid product-image" 
+               [alt]="product.name">
           
-          <div class="d-flex justify-content-between align-items-center mt-3">
-            <span class="h5 mb-0 text-primary fw-bold">{{ product.price }} €</span>
-            <button class="btn btn-success btn-sm px-3" (click)="addToCart(product)">
-              <i class="bi bi-cart-plus me-1"></i> Ajouter au panier
+          <i *ngIf="!product.imageUrl" class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+        </div>
+
+        <div class="card-body">
+          <h5 class="fw-bold product-name">{{ product.name }}</h5>
+          <p class="text-primary fs-5 fw-bold product-price">{{ product.price }} €</p>
+        </div>
+
+        <div class="card-footer bg-white border-0">
+          <div *ngIf="isUserConnected; else messageLogin">
+            <button (click)="ajouterAuPanier(product)" 
+                    class="btn btn-success btn-sm w-100 add-to-cart-btn"
+                    [class.adding]="(addingToCart$ | async) === product.id"
+                    [disabled]="(addingToCart$ | async) === product.id">
+              <span *ngIf="(addingToCart$ | async) !== product.id">
+                <i class="bi bi-cart-plus me-2"></i>Ajouter au panier
+              </span>
+              <span *ngIf="(addingToCart$ | async) === product.id">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Ajout...
+              </span>
             </button>
           </div>
+
+          <ng-template #messageLogin>
+            <a routerLink="/login" class="btn btn-outline-primary btn-sm w-100">
+              Se connecter pour acheter
+            </a>
+          </ng-template>
         </div>
       </div>
     </div>

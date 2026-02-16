@@ -1,1 +1,27 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+/* Couleurs par défaut (Light) */
+:root {
+  --bg-app: #f4f7f6;
+  --bg-card: #ffffff;
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --border-color: #dfe6e9;
+}
+
+/* Couleurs Mode Sombre */
+[data-theme='dark'] {
+  --bg-app: #121212;
+  --bg-card: #1e1e1e;
+  --text-primary: #f5f6fa;
+  --text-secondary: #b2bec3;
+  --border-color: #2d3436;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

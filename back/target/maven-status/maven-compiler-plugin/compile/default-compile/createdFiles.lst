@@ -1,4 +1,15 @@
-com/example/demo/DemoApplication.class
+com/example/demo/controllers/WebConfig.class
+com/example/demo/config/JwtUtils.class
+com/example/demo/repositories/UserRepository.class
+com/example/demo/config/JwtAuthenticationFilter.class
 com/example/demo/controllers/ProductController.class
-com/example/demo/repositories/ProductRepository.class
+com/example/demo/entities/AuthRequest.class
+com/example/demo/entities/User.class
+com/example/demo/DemoApplication.class
+com/example/demo/config/SecurityConfig.class
+com/example/demo/repositories/CartItemRepository.class
 com/example/demo/entities/Product.class
+com/example/demo/entities/CartItem.class
+com/example/demo/controllers/AuthController.class
+com/example/demo/controllers/CartController.class
+com/example/demo/repositories/ProductRepository.class

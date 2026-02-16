@@ -1,0 +1,64 @@
+<div class="cart-container container mt-5 shadow-sm">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold"><i class="bi bi-cart3 me-2"></i>Mon Panier</h2>
+    <span class="badge bg-primary rounded-pill">{{ cartItems.length }} articles</span>
+  </div>
+
+  <div *ngIf="cartItems.length === 0" class="text-center py-5">
+    <div class="display-1 text-muted mb-4"><i class="bi bi-cart-x"></i></div>
+    <h3 class="text-muted">Votre panier est encore vide</h3>
+    <button routerLink="/" class="btn btn-outline-primary mt-3 px-4">Découvrir nos produits</button>
+  </div>
+
+  <div class="row" *ngIf="cartItems.length > 0">
+    <div class="col-lg-8">
+      <div class="card cart-card mb-3 shadow-sm" *ngFor="let item of cartItems">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-auto">
+              <div class="product-img-placeholder">📦</div>
+            </div>
+            <div class="col">
+              <h5 class="mb-1 fw-bold">{{ item.product?.name }}</h5>
+              <small class="text-muted">Prix unitaire: {{ item.product?.price }} €</small>
+            </div>
+            <div class="col-auto text-center">
+              <div class="fw-bold mb-1">Quantité</div>
+              <span class="badge bg-light text-dark border px-3 py-2">{{ item.quantity }}</span>
+            </div>
+            <div class="col-auto text-end">
+              <div class="price-tag h5 mb-0">{{ (item.product?.price || 0) * item.quantity }} €</div>
+              <button class="btn btn-link text-danger p-0 mt-2" (click)="supprimerItem(item.id)">
+                <i class="bi bi-trash"></i> Retirer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+        <div class="card-body">
+          <h4 class="fw-bold mb-4">Résumé</h4>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Sous-total</span>
+            <span>{{ total }} €</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span>Livraison</span>
+            <span class="text-success fw-bold">Gratuite</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between mb-4">
+            <span class="h5 fw-bold">Total</span>
+            <span class="h4 fw-bold text-primary">{{ total }} €</span>
+          </div>
+          <button class="btn btn-primary btn-checkout w-100 py-3 rounded-3 shadow">
+            PASSER À LA CAISSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

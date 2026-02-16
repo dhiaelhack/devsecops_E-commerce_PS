@@ -1,0 +1,40 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5 card shadow-lg p-4 border-0">
+      <div class="text-center mb-4">
+        <i class="bi bi-person-plus-fill text-success" style="font-size: 3rem;"></i>
+        <h3 class="text-success mt-2">Créer un compte</h3>
+        <p class="text-muted small">Rejoignez E-Store 2026</p>
+      </div>
+      
+      <form (ngSubmit)="onRegister()">
+        <div class="mb-3">
+          <label class="form-label fw-bold">
+            <i class="bi bi-person-fill me-2"></i>Nom d'utilisateur
+          </label>
+          <input type="text" [(ngModel)]="userModel.username" name="username" 
+                 class="form-control" placeholder="Choisissez un pseudo" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">
+            <i class="bi bi-lock-fill me-2"></i>Mot de passe
+          </label>
+          <input type="password" [(ngModel)]="userModel.password" name="password" 
+                 class="form-control" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 py-2 fw-bold shadow-sm">
+          S'inscrire
+        </button>
+
+        <div class="mt-4 text-center">
+          <p class="mb-1 small">Déjà inscrit ?</p>
+          <a routerLink="/login" class="text-primary fw-bold text-decoration-none">
+            Se connecter maintenant
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

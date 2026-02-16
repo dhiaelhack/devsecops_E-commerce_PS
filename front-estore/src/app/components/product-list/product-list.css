@@ -1,0 +1,29 @@
+.container {
+  max-width: 1000px;
+}
+
+.table img {
+  border-radius: 8px;
+}
+
+/* Style spécifique pour le formulaire d'ajout quand il apparaît */
+app-add-product {
+  display: block;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Couleurs adaptées au thème */
+[data-theme='dark'] .table {
+  color: #f8f9fa;
+  background-color: #1e1e1e;
+}
+
+[data-theme='dark'] .bg-light {
+  background-color: #2d2d2d !important;
+  color: white;
+}

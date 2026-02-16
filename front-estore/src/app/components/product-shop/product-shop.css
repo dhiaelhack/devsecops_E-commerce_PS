@@ -1,0 +1,95 @@
+/* Container principal */
+.container {
+  padding-bottom: 50px;
+}
+
+/* Design des cartes produit */
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 15px !important;
+  overflow: hidden;
+  position: relative; /* Pour positionner le badge de catégorie */
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+/* Badge de catégorie */
+.product-category {
+  font-size: 0.75rem;
+  padding: 0.4em 0.8em;
+  border-radius: 0.5rem;
+  background-color: #0d6efd !important; /* Bleu Bootstrap par défaut */
+  color: white;
+}
+
+/* Zone Image */
+.card-img-top {
+  background-color: #ffffff;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.product-image {
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05); /* Petit zoom sur l'image au survol */
+}
+
+/* Typographie et prix */
+.product-name {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  color: #2c3e50 !important; /* Bleu foncé pro pour le prix */
+}
+
+/* Bouton Ajouter au panier */
+.add-to-cart-btn {
+  background-color: #27ae60;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+  background-color: #219150;
+  transform: translateY(-2px);
+}
+
+/* Style pendant l'ajout au panier */
+.add-to-cart-btn.adding {
+  background-color: #0d6efd !important; /* Bleu pendant l'animation */
+  color: white;
+  cursor: not-allowed;
+  transform: scale(1.02);
+}
+
+.add-to-cart-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.product-card {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.product-name {
+  color: var(--text-primary);
+}
+
+.product-price {
+  color: #27ae60 !important; /* On garde le vert pour le prix, il ressort bien partout */
+}
+
+.card-img-top {
+  background-color: var(--bg-card) !important;
+}

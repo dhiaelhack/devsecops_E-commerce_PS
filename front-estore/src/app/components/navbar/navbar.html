@@ -1,31 +1,45 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-4">
+<nav class="navbar navbar-expand-lg shadow-sm" [ngClass]="isDark ? 'navbar-dark bg-dark' : 'navbar-light bg-light'">
   <div class="container">
-    <a class="navbar-brand" href="#">
-      <strong>E-Store <span class="text-primary">2026</span></strong>
+    <a class="navbar-brand fw-bold" routerLink="/shop">
+      <i class="bi bi-shop me-2"></i>E-Store 2026
     </a>
-    
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Tous les produits</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Laptops</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Accessoires</a>
-        </li>
-      </ul>
-    </div>
 
-    <div class="d-flex align-items-center text-light">
-      <span class="me-3 d-none d-md-block">Bienvenue, <strong>Dhia</strong></span>
-      <button class="btn btn-primary position-relative">
-        🛒 Panier
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-          2
-        </span>
-      </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="ms-auto d-flex align-items-center gap-3">
+        
+        <button (click)="toggleTheme()" class="btn btn-sm d-flex align-items-center gap-2" 
+                [ngClass]="isDark ? 'btn-outline-warning' : 'btn-outline-dark'">
+          <i class="bi" [ngClass]="isDark ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
+          <span>{{ isDark ? 'Mode Clair' : 'Mode Sombre' }}</span>
+        </button>
+
+        <div *ngIf="!username; else loggedInZone" class="d-flex gap-2">
+          <a class="btn btn-outline-primary btn-sm" routerLink="/login">Connexion</a>
+          <a class="btn btn-primary btn-sm" routerLink="/register">S'inscrire</a>
+        </div>
+
+        <ng-template #loggedInZone>
+          <div class="d-flex align-items-center gap-3">
+            <a routerLink="/cart" class="btn btn-outline-info btn-sm">
+              <i class="bi bi-cart3 me-1"></i> Panier
+            </a>
+
+            <span [ngClass]="isDark ? 'text-white' : 'text-dark'">
+              <i class="bi bi-person-circle me-1"></i>
+              <strong>{{ username }}</strong>
+            </span>
+
+            <button (click)="onLogout()" class="btn btn-danger btn-sm">
+              Déconnexion
+            </button>
+          </div>
+        </ng-template>
+
+      </div>
     </div>
   </div>
 </nav>
