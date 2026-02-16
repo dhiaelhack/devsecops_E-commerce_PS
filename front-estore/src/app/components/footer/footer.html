@@ -1,0 +1,68 @@
+<footer class="footer mt-auto py-5 shadow-lg transition-all" 
+        [ngClass]="isDark ? 'glass-footer-dark text-light' : 'glass-footer-light text-dark'">
+  <div class="container">
+    <div class="row g-5">
+      
+      <div class="col-lg-5">
+        <div class="d-flex align-items-center gap-2 mb-4 brand-animate">
+          <div class="p-2 bg-primary bg-gradient rounded-3 shadow">
+            <i class="bi bi-cpu-fill text-white fs-4"></i>
+          </div>
+          <span class="fw-black text-uppercase tracking-tight fs-4">TechDeals <span class="text-primary">2026</span></span>
+        </div>
+        <p class="opacity-75 lh-base mb-4">
+          Les meilleures offres high-tech, toujours à portée de clic ! 
+          Découvrez une sélection rigoureuse de composants et périphériques 
+          pour booster vos performances.
+        </p>
+        
+        <div class="d-flex gap-3">
+          <a href="https://www.facebook.com/profile.php?id=61570406530932" target="_blank" class="social-circle shadow-sm" title="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://www.instagram.com/codeclash_eniso/" target="_blank" class="social-circle shadow-sm" title="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="https://gitlab.com/dhia_jaz_slim/devsecops_E-commerce_PS" target="_blank" class="social-circle shadow-sm" title="GitLab Repo">
+            <i class="bi bi-gitlab"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-2">
+        <h6 class="fw-bold text-uppercase mb-4 small tracking-widest text-primary">Boutique</h6>
+        <ul class="nav flex-column gap-2">
+          <li class="nav-item"><a routerLink="/shop" class="nav-link p-0 footer-link">Hardware</a></li>
+          <li class="nav-item"><a routerLink="/shop" class="nav-link p-0 footer-link">Gaming</a></li>
+          <li class="nav-item"><a routerLink="/cart" class="nav-link p-0 footer-link">Panier</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-5 col-xl-4 ms-auto">
+        <h6 class="fw-bold text-uppercase mb-4 small tracking-widest text-primary">Restez branché</h6>
+        <p class="small opacity-75 mb-3">Suivez-nous pour ne rien manquer des derniers drops !</p>
+        <div class="input-group shadow-sm">
+          <input type="email" class="form-control border-0 px-3 bg-opacity-10 bg-secondary rounded-start-pill" 
+                 placeholder="Votre email" [ngClass]="isDark ? 'text-white' : 'text-dark'">
+          <button class="btn btn-primary px-4 rounded-end-pill fw-bold" type="button">S'abonner</button>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="my-5 opacity-10">
+
+    <div class="row align-items-center">
+      <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+        <span class="small opacity-50">© 2026 TechDeals. Suivez-nous pour ne rien manquer.</span>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <div class="payment-icons opacity-50">
+          <i class="bi bi-credit-card-2-front fs-4 me-3"></i>
+          <i class="bi bi-paypal fs-4 me-3"></i>
+          <i class="bi bi-wallet2 fs-4"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,59 @@
+/* --- GLASSMORPHISM --- */
+.glass-footer-light {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.glass-footer-dark {
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* --- ANIMATIONS DES LIENS --- */
+.footer-link {
+  color: inherit !important;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  width: fit-content;
+}
+
+.footer-link:hover {
+  opacity: 1;
+  color: #0d6efd !important;
+  transform: translateX(8px);
+}
+
+/* --- ICONES SOCIALES STYLE DYNAMIQUE --- */
+.social-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.social-circle:hover {
+  background: #0d6efd;
+  color: white;
+  transform: scale(1.15) rotate(8deg);
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+}
+
+/* Spécifique GitLab Orange au hover */
+.social-circle:hover .bi-gitlab {
+  color: #fc6d26;
+  filter: brightness(1.5);
+}
+
+.fw-black { font-weight: 900; }
+.tracking-tight { letter-spacing: -1px; }
+.tracking-widest { letter-spacing: 2px; }
+.transition-all { transition: all 0.4s ease; }

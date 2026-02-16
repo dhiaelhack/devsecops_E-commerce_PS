@@ -1,0 +1,85 @@
+/* --- 1. GLASSMORPHISM (Effet Verre) --- */
+/* Pour le mode clair : blanc translucide */
+.glass-nav-light {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Pour le mode sombre : noir translucide */
+.glass-nav-dark {
+  background-color: rgba(33, 37, 41, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- 2. LOGO DYNAMIQUE --- */
+.logo-icon-box {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #0d6efd, #6610f2); /* Dégradé Bootstrap Primary/Purple */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Au survol du logo, la boîte tourne légèrement */
+.group-hover-logo:hover .logo-icon-box {
+  transform: rotate(15deg) scale(1.1);
+}
+
+.fw-black { font-weight: 900; letter-spacing: -0.5px; }
+
+/* --- 3. ANIMATIONS BOUTONS (Scale Effect) --- */
+.scale-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scale-btn:active {
+  transform: scale(0.95); /* Effet de clic */
+}
+
+.scale-btn:hover {
+  transform: translateY(-2px); /* Léger soulèvement */
+}
+
+/* --- 4. BADGE PULSE (Panier) --- */
+.badge-pulse {
+  animation: pulse-red 2s infinite;
+  box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+}
+
+@keyframes pulse-red {
+  0% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+  70% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 6px rgba(220, 53, 69, 0); }
+  100% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+/* --- 5. PROFIL UTILISATEUR --- */
+.profile-badge {
+  transition: all 0.3s ease;
+}
+
+.avatar-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+/* --- 6. TRANSITIONS GLOBALES --- */
+.transition-all {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Correction z-index pour que le badge passe par-dessus tout */
+.position-relative {
+  z-index: 1;
+}

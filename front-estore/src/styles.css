@@ -25,3 +25,19 @@ body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  flex: 1 0 auto; /* Force le contenu à prendre tout l'espace disponible */
+}
+
+app-footer {
+  flex-shrink: 0; /* Empêche le footer de se compresser */
+}

@@ -1,45 +1,80 @@
-<nav class="navbar navbar-expand-lg shadow-sm" [ngClass]="isDark ? 'navbar-dark bg-dark' : 'navbar-light bg-light'">
+<nav class="navbar navbar-expand-lg sticky-top py-2 transition-all"
+     [ngClass]="isDark ? 'navbar-dark glass-nav-dark' : 'navbar-light glass-nav-light'">
+  
   <div class="container">
-    <a class="navbar-brand fw-bold" routerLink="/shop">
-      <i class="bi bi-shop me-2"></i>E-Store 2026
+    
+    <a class="navbar-brand d-flex align-items-center gap-2 group-hover-logo" routerLink="/shop">
+      <div class="logo-icon-box shadow-lg">
+        <i class="bi bi-cpu-fill text-white fs-5"></i>
+      </div>
+      <div class="d-flex flex-column lh-1">
+        <span class="fw-black text-uppercase tracking-wide">E-Store</span>
+        <span class="small fw-bold text-primary animate-year">2026</span>
+      </div>
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler border-0 shadow-none scale-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <div class="ms-auto d-flex align-items-center gap-3">
+      <ul class="navbar-nav ms-auto align-items-center gap-2 gap-lg-3 mt-3 mt-lg-0">
         
-        <button (click)="toggleTheme()" class="btn btn-sm d-flex align-items-center gap-2" 
-                [ngClass]="isDark ? 'btn-outline-warning' : 'btn-outline-dark'">
-          <i class="bi" [ngClass]="isDark ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
-          <span>{{ isDark ? 'Mode Clair' : 'Mode Sombre' }}</span>
-        </button>
+        <li class="nav-item">
+          <button (click)="toggleTheme()" class="btn btn-sm rounded-circle p-2 shadow-sm scale-btn" 
+                  [ngClass]="isDark ? 'btn-outline-warning text-warning' : 'btn-outline-dark'">
+            <i class="bi" [ngClass]="isDark ? 'bi-sun-fill' : 'bi-moon-stars-fill'"></i>
+          </button>
+        </li>
 
-        <div *ngIf="!username; else loggedInZone" class="d-flex gap-2">
-          <a class="btn btn-outline-primary btn-sm" routerLink="/login">Connexion</a>
-          <a class="btn btn-primary btn-sm" routerLink="/register">S'inscrire</a>
-        </div>
-
-        <ng-template #loggedInZone>
-          <div class="d-flex align-items-center gap-3">
-            <a routerLink="/cart" class="btn btn-outline-info btn-sm">
-              <i class="bi bi-cart3 me-1"></i> Panier
+        <ng-container *ngIf="username; else loggedOutZone">
+          
+          <li class="nav-item">
+            <a routerLink="/cart" class="btn btn-outline-primary rounded-pill position-relative px-3 py-1 fw-bold shadow-sm border-2 scale-btn">
+              <i class="bi bi-cart3 me-1"></i> 
+              <span class="d-none d-md-inline">Panier</span>
+              
+              <span *ngIf="cartCount > 0" 
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 badge-pulse"
+                    [ngClass]="isDark ? 'border-dark' : 'border-white'">
+                {{ cartCount }}
+              </span>
             </a>
+          </li>
 
-            <span [ngClass]="isDark ? 'text-white' : 'text-dark'">
-              <i class="bi bi-person-circle me-1"></i>
-              <strong>{{ username }}</strong>
-            </span>
+          <li class="nav-item" *ngIf="userRole === 'ADMIN'">
+            <a routerLink="/admin" class="btn btn-warning btn-sm rounded-pill fw-bolder px-3 py-1 shadow-sm bg-gradient text-dark scale-btn">
+              <i class="bi bi-shield-check me-1"></i> Admin
+            </a>
+          </li>
 
-            <button (click)="onLogout()" class="btn btn-danger btn-sm">
-              Déconnexion
+          <li class="nav-item">
+            <div class="d-flex align-items-center px-3 py-1 rounded-pill shadow-sm border profile-badge"
+                 [ngClass]="isDark ? 'bg-dark border-secondary' : 'bg-white border-light'">
+              <div class="avatar-circle me-2 bg-gradient bg-primary text-white">
+                <i class="bi bi-person-fill"></i>
+              </div>
+              <span class="small fw-bold user-select-none" [ngClass]="isDark ? 'text-light' : 'text-dark'">
+                {{ username }}
+              </span>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <button (click)="onLogout()" class="btn btn-sm btn-danger rounded-circle p-2 shadow-sm scale-btn" title="Déconnexion">
+              <i class="bi bi-power"></i>
             </button>
-          </div>
+          </li>
+        </ng-container>
+
+        <ng-template #loggedOutZone>
+          <li class="nav-item d-flex gap-2">
+            <a routerLink="/login" class="btn btn-sm btn-outline-primary px-4 rounded-pill fw-bold scale-btn">Login</a>
+            <a routerLink="/register" class="btn btn-sm btn-primary px-4 rounded-pill fw-bold shadow-lg bg-gradient scale-btn">Join</a>
+          </li>
         </ng-template>
 
-      </div>
+      </ul>
     </div>
   </div>
 </nav>
