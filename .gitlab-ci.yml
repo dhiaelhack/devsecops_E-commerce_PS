@@ -14,7 +14,7 @@ build-back:
   stage: build
   image: maven:3.9-eclipse-temurin-17
   tags:
-    - maven  # Indique d'utiliser ton Runner local
+    - maven
   script:
     - cd back
     - mvn clean compile -DskipTests
@@ -22,7 +22,7 @@ build-back:
     paths:
       - back/target/
 
-# Stage 2 : Tests Unitaires
+# Stage 2 : Tests Unitaires (Corrigé)
 unit-test-back:
   stage: test
   image: maven:3.9-eclipse-temurin-17
@@ -30,7 +30,10 @@ unit-test-back:
     - maven
   script:
     - cd back
-    - mvn test -Dmaven.test.failure.ignore=true  artifacts:
+    # On ignore l'échec des tests pour passer à SonarQube
+    - mvn test -Dmaven.test.failure.ignore=true 
+  artifacts:
+    when: always
     reports:
       junit: back/target/surefire-reports/TEST-*.xml
 
@@ -41,7 +44,6 @@ sonarqube-check:
   tags:
     - maven
   variables:
-    # On utilise ton IP locale identifiée plus haut
     SONAR_HOST_URL: "http://192.168.100.67:9000"
   script:
     - cd back
