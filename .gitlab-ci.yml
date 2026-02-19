@@ -1,4 +1,3 @@
-# Pipeline DevSecOps pour E-commerce PS
 stages:
   - build
   - test
@@ -9,7 +8,6 @@ variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
 
-# Stage 1 : Build
 build-back:
   stage: build
   image: maven:3.9-eclipse-temurin-17
@@ -22,7 +20,6 @@ build-back:
     paths:
       - back/target/
 
-# Stage 2 : Tests Unitaires (Corrigé)
 unit-test-back:
   stage: test
   image: maven:3.9-eclipse-temurin-17
@@ -30,32 +27,29 @@ unit-test-back:
     - maven
   script:
     - cd back
-    # On ignore l'échec des tests pour passer à SonarQube
-    - mvn test -Dmaven.test.failure.ignore=true 
+    - mvn test -Dmaven.test.failure.ignore=true
   artifacts:
     when: always
     reports:
       junit: back/target/surefire-reports/TEST-*.xml
 
-# Stage 3 : Analyse SonarQube (Phase 3)
 sonarqube-check:
   stage: security_scan
   image: maven:3.9-eclipse-temurin-17
   tags:
     - maven
   variables:
-    SONAR_HOST_URL: "http://192.168.100.67:9000"
+    SONAR_HOST_URL: "http://172.17.0.1:9000"
   script:
     - cd back
-    - mvn verify sonar:sonar -Dsonar.token=$SONAR_TOKEN
+    - mvn verify sonar:sonar -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=$SONAR_HOST_URL
   only:
     - master
     - main
 
-# Stage 4 : Simulation Déploiement
 deploy-job:
   stage: deploy
   tags:
     - docker
   script:
-    - echo "Déploiement de l'application E-commerce sur le serveur de production..."
+    - echo "Déploiement en cours..."
