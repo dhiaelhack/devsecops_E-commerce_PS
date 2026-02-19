@@ -22,6 +22,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
+
+		<sonar.projectKey>dhia_jaz_slim_devsecops_E-commerce_PS_215f4fc3-075e-42c8-bff3-ad57637695cb</sonar.projectKey>
+		<sonar.projectName>devsecops_E-commerce_PS</sonar.projectName>
+		<sonar.qualitygate.wait>true</sonar.qualitygate.wait>
 	</properties>
 
 	<dependencies>
@@ -103,6 +107,7 @@
 				<version>3.0.0-M3</version>
 			</plugin>
 		</plugins>
+
 	</build>
 
 </project>
