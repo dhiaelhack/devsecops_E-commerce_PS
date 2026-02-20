@@ -3,6 +3,7 @@
 /home/dhia/Bureau/devsecops_E-commerce_PS/back/src/main/java/com/example/demo/repositories/ProductRepository.java
 /home/dhia/Bureau/devsecops_E-commerce_PS/back/src/main/java/com/example/demo/entities/CartItem.java
 /home/dhia/Bureau/devsecops_E-commerce_PS/back/src/main/java/com/example/demo/config/JwtAuthenticationFilter.java
+/home/dhia/Bureau/devsecops_E-commerce_PS/back/src/main/java/com/example/demo/controllers/RootController.java
 /home/dhia/Bureau/devsecops_E-commerce_PS/back/src/main/java/com/example/demo/controllers/AuthController.java
 /home/dhia/Bureau/devsecops_E-commerce_PS/back/src/main/java/com/example/demo/repositories/CartItemRepository.java
 /home/dhia/Bureau/devsecops_E-commerce_PS/back/src/main/java/com/example/demo/entities/Product.java

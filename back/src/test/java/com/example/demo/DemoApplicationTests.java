@@ -19,7 +19,7 @@ class DemoApplicationTests {
 
 	@Test
 	void homeResponse() {
-		String body = this.restTemplate.getForObject("/", String.class);
+		String body = this.restTemplate.getForObject("src/main/java/com/example/demo/controllers/RootController.java", String.class);
 		assertEquals("Spring is here!", body);
 	}
 }
