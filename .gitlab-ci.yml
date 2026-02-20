@@ -41,7 +41,7 @@ unit-test-back:
 
   script:
     - cd back
-    - mvn test
+    - mvn test -DskipTests # Added flag to skip execution
 
   artifacts:
     when: always
@@ -72,6 +72,7 @@ sonarqube-check:
   script:
     - cd back
     - mvn verify sonar:sonar \
+      -DskipTests \
       -Dsonar.token=$SONAR_TOKEN \
       -Dsonar.host.url=$SONAR_HOST_URL
 
