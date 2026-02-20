@@ -8,6 +8,9 @@ variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
 
+################################
+# BUILD BACKEND
+################################
 build-back:
   stage: build
   image: maven:3.9-eclipse-temurin-17
@@ -20,33 +23,65 @@ build-back:
     paths:
       - back/target/
 
+################################
+# TEST BACKEND (MongoDB Service)
+################################
 unit-test-back:
   stage: test
   image: maven:3.9-eclipse-temurin-17
   tags:
     - maven
+
+  services:
+    - name: mongo:6
+      alias: mongo
+
+  variables:
+    SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/testdb
+
   script:
     - cd back
-    - mvn test -Dmaven.test.failure.ignore=true
+    - mvn test
+
   artifacts:
     when: always
     reports:
       junit: back/target/surefire-reports/TEST-*.xml
 
+################################
+# SONARQUBE ANALYSIS
+################################
 sonarqube-check:
   stage: security_scan
   image: maven:3.9-eclipse-temurin-17
   tags:
     - maven
+
+  services:
+    - name: mongo:6
+      alias: mongo
+
+  cache:
+    key: sonar-cache
+    paths:
+      - .sonar/cache
+
   variables:
-    SONAR_HOST_URL: "172.17.0.1:9000"
+    SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/testdb
+
   script:
     - cd back
-    - mvn verify sonar:sonar -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=$SONAR_HOST_URL
-  only:
-    - master
-    - main
+    - mvn verify sonar:sonar \
+      -Dsonar.token=$SONAR_TOKEN \
+      -Dsonar.host.url=$SONAR_HOST_URL
 
+  only:
+    - main
+    - master
+
+################################
+# DEPLOY STEP
+################################
 deploy-job:
   stage: deploy
   tags:
