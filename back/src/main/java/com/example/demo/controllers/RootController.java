@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RootController {
 
-    @GetMapping("/")
+    @GetMapping("/") // This corresponds to the "/" in your test
     public String home() {
         return "Spring is here!";
     }

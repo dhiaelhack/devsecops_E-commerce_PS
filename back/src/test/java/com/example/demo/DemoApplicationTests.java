@@ -19,7 +19,8 @@ class DemoApplicationTests {
 
 	@Test
 	void homeResponse() {
-		String body = this.restTemplate.getForObject("src/main/java/com/example/demo/controllers/RootController.java", String.class);
+		// CHANGE: Use "/" instead of the file path
+		String body = this.restTemplate.getForObject("/", String.class);
 		assertEquals("Spring is here!", body);
 	}
 }
