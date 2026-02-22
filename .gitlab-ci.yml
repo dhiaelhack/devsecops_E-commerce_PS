@@ -76,8 +76,7 @@ dependency-check:
   script:
     - cd back
     # Cette commande scanne tes dépendances Java
-    - mvn org.owasp:dependency-check-maven:check
-  artifacts:
+    - mvn org.owasp:dependency-check-maven:check -DnvdDatafeedUrl=https://jeremylong.github.io/DependencyCheck/merged.json  artifacts:
     name: "dependency-check-report"
     paths:
       - back/target/dependency-check-report.html
