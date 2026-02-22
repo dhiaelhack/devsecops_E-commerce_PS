@@ -88,24 +88,42 @@ dependency-check:
 ###########################################################
 zap_vulnerability_scan:
   stage: security_scan
-  image: ghcr.io/zaproxy/zaproxy:stable
+  image:
+    name: ghcr.io/zaproxy/zaproxy:stable
+    entrypoint: [""]  # permet d'exécuter directement des commandes shell
   tags:
     - docker
   before_script:
-    - mkdir -p security-reports
+    # Crée le dossier local où les rapports seront stockés
+    - mkdir -p ~/security-reports
   script:
-    # 5.1 - Scan du Frontend (Angular)
-    # Vérifie les en-têtes de sécurité et les failles de navigation
-    - zap-baseline.py -t http://172.17.0.1:4200 -r security-reports/rapport_zap_front.html
+    # -------------------------------
+    # 5.1 Scan Frontend (Angular)
+    # -------------------------------
+    - docker run --rm \
+      -v ~/security-reports:/zap/wrk \
+      ghcr.io/zaproxy/zaproxy:stable \
+      zap-baseline.py \
+      -t http://172.17.0.1:4200 \
+      -r /zap/wrk/rapport_zap_front.html \
+      -J /zap/wrk/rapport_zap_front.json
 
-    # 5.2 - Scan du Backend (Spring Boot) via ton Plan Automation Framework
-    # Utilise ton fichier YAML pour explorer les API du port 8080
-    - zap.sh -cmd -autorun zap-api-plan.yaml
+    # -------------------------------
+    # 5.2 Scan Backend (Spring Boot) via plan YAML
+    # -------------------------------
+    - docker run --rm \
+      -v ~/security-reports:/zap/wrk \
+      -v ~/back/zap-api-plan.yaml:/zap/wrk/zap-api-plan.yaml \
+      ghcr.io/zaproxy/zaproxy:stable \
+      zap.sh -cmd -autorun /zap/wrk/zap-api-plan.yaml
+
   artifacts:
     when: always
     paths:
-      - security-reports/
-      - zap_out.json
+      - ~/security-reports/
+    reports:
+      # On peut au moins récupérer le JSON frontend pour GitLab
+      sast: ~/security-reports/rapport_zap_front.json
 
 ################################
 # 6. DÉPLOIEMENT (SIMULATION)
