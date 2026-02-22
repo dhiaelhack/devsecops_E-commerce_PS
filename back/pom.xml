@@ -115,8 +115,10 @@
 					<nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
 					<nvdApiDelay>10000</nvdApiDelay>
 					<failOnError>false</failOnError>
-					<format>HTML</format>
-					<format>GITLAB</format>
+					<formats>
+						<format>HTML</format>
+						<format>GITLAB</format>
+					</formats>
 				</configuration>
 
 				<executions>
