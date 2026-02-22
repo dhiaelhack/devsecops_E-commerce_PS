@@ -8,7 +8,7 @@ variables:
   # Configuration pour SonarQube
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
-  # Utilisation de l'IP de la passerelle Docker validée par ton curl
+  # IP de la passerelle Docker validée pour ton environnement Ubuntu
   SONAR_HOST_URL: "http://172.17.0.1:9000"
 
 ################################
@@ -41,7 +41,7 @@ unit-test-back:
     SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/testdb
   script:
     - cd back
-    # On ignore les échecs de tests pour ne pas bloquer le scan de sécurité
+    # On ignore les échecs de tests pour ne pas bloquer les scans de sécurité suivants
     - mvn test -Dmaven.test.failure.ignore=true
   artifacts:
     when: always
@@ -49,7 +49,7 @@ unit-test-back:
       junit: back/target/surefire-reports/TEST-*.xml
 
 ################################
-# 3. ANALYSE DE SÉCURITÉ SONAR
+# 3. ANALYSE DE SÉCURITÉ SONAR (SAST)
 ################################
 sonarqube-check:
   stage: security_scan
@@ -58,15 +58,14 @@ sonarqube-check:
     - maven
   script:
     - cd back
-    # On force l'URL et le Token pour garantir la connexion au serveur local
+    # Analyse de la qualité du code (ex: ProductListComponent)
     - mvn verify sonar:sonar -DskipTests -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=$SONAR_HOST_URL
   only:
     - master
     - main
 
-
 ################################
-# 4. ANALYSE DES LIBRAIRIES (OWASP)
+# 4. ANALYSE DES LIBRAIRIES (SCA)
 ################################
 dependency-check:
   stage: security_scan
@@ -74,9 +73,8 @@ dependency-check:
   tags:
     - maven
   script:
-    - echo "Checking API key presence..."
-    - if [ -z "$NVD_API_KEY" ]; then echo "API KEY NOT FOUND"; else echo "API KEY OK"; fi
     - cd back
+    # Vérification des vulnérabilités connues dans les dépendances Maven
     - mvn clean verify -DskipTests
   artifacts:
     when: always
@@ -85,25 +83,29 @@ dependency-check:
     paths:
       - back/target/dependency-check-report.html
 
-# ========================================================
-# ÉTAPE 5 : Sécurité Dynamique (DAST) avec OWASP ZAP
-# ========================================================
-
+###########################################################
+# 5. SÉCURITÉ DYNAMIQUE (DAST) - OWASP ZAP
+###########################################################
 zap_vulnerability_scan:
-  stage: test
+  stage: security_scan
   image: ghcr.io/zaproxy/zaproxy:stable
+  tags:
+    - docker
   before_script:
     - mkdir -p security-reports
   script:
     # 5.1 - Scan du Frontend (Angular)
+    # Vérifie les en-têtes de sécurité et les failles de navigation
     - zap-baseline.py -t http://172.17.0.1:4200 -r security-reports/rapport_zap_front.html
 
-    # 5.2 - Scan du Backend (Spring Boot) via ton Plan YAML
+    # 5.2 - Scan du Backend (Spring Boot) via ton Plan Automation Framework
+    # Utilise ton fichier YAML pour explorer les API du port 8080
     - zap.sh -cmd -autorun zap-api-plan.yaml
   artifacts:
     when: always
     paths:
       - security-reports/
+      - zap_out.json
 
 ################################
 # 6. DÉPLOIEMENT (SIMULATION)
@@ -113,4 +115,4 @@ deploy-job:
   tags:
     - docker
   script:
-    - echo "Analyse SonarQube terminée avec succès."
+    - echo "Analyse de sécurité terminée. Prêt pour le déploiement de l'E-commerce PS."
