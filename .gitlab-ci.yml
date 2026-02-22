@@ -75,8 +75,9 @@ dependency-check:
     - maven
   script:
     - cd back
-    # Cette commande scanne tes dépendances Java
-    - mvn org.owasp:dependency-check-maven:check -DnvdDatafeedUrl=https://jeremylong.github.io/DependencyCheck/merged.json  artifacts:
+    # Utilisation du miroir pour éviter l'erreur 403 (NVD)
+    - mvn org.owasp:dependency-check-maven:check -DnvdDatafeedUrl=https://jeremylong.github.io/DependencyCheck/merged.json
+  artifacts:
     name: "dependency-check-report"
     paths:
       - back/target/dependency-check-report.html
