@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -8,11 +9,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Définit le chemin vers votre dossier d'images sur le disque dur
-        String uploadPath = System.getProperty("user.dir") + "/uploads/";
+    public void addCorsMappings(CorsRegistry registry) {
+        // Autorise le Frontend à parler au Backend
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:4200", "http://172.17.0.1:4200")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
 
-        // Expose le dossier "uploads" via l'URL http://localhost:8080/api/products/images/
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String uploadPath = System.getProperty("user.dir") + "/uploads/";
         registry.addResourceHandler("/api/products/images/**")
                 .addResourceLocations("file:" + uploadPath);
     }

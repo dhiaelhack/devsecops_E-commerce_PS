@@ -8,7 +8,7 @@ export class AuthService {
 
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'http://172.17.0.1:8080/api/auth';
 
   // 🔥 ÉTAT GLOBAL D'AUTHENTIFICATION
   // Le BehaviorSubject permet à toute l'application de savoir en temps réel qui est connecté

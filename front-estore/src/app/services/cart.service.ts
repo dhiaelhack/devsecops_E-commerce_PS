@@ -8,7 +8,7 @@ import { Product } from '../models/product';
 })
 export class CartService {
   private http = inject(HttpClient);
-  private readonly API_URL = 'http://localhost:8080/api/cart';
+  private readonly API_URL = 'http://172.17.0.1:8080/api/cart';
 
   private cartCount = new BehaviorSubject<number>(0);
   cartCount$ = this.cartCount.asObservable();

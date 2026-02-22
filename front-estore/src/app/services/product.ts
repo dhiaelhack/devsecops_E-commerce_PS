@@ -8,7 +8,7 @@ import { Product } from '../models/product';
 })
 export class ProductService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/products';
+  private apiUrl = 'http://172.17.0.1:8080/api/products';
 
   // Récupérer tous les produits
   getProducts(): Observable<Product[]> {

@@ -84,8 +84,29 @@ dependency-check:
       dependency_scanning: back/target/dependency-check-report.gitlab.json
     paths:
       - back/target/dependency-check-report.html
+
+# ========================================================
+# ÉTAPE 5 : Sécurité Dynamique (DAST) avec OWASP ZAP
+# ========================================================
+
+zap_vulnerability_scan:
+  stage: test
+  image: ghcr.io/zaproxy/zaproxy:stable
+  before_script:
+    - mkdir -p security-reports
+  script:
+    # 5.1 - Scan du Frontend (Angular)
+    - zap-baseline.py -t http://172.17.0.1:4200 -r security-reports/rapport_zap_front.html
+
+    # 5.2 - Scan du Backend (Spring Boot) via ton Plan YAML
+    - zap.sh -cmd -autorun zap-api-plan.yaml
+  artifacts:
+    when: always
+    paths:
+      - security-reports/
+
 ################################
-# 5. DÉPLOIEMENT (SIMULATION)
+# 6. DÉPLOIEMENT (SIMULATION)
 ################################
 deploy-job:
   stage: deploy
