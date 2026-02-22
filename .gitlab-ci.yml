@@ -74,14 +74,10 @@ dependency-check:
   tags:
     - maven
   script:
+    - echo "Checking API key presence..."
+    - if [ -z "$NVD_API_KEY" ]; then echo "API KEY NOT FOUND"; else echo "API KEY OK"; fi
     - cd back
     - mvn clean verify -DskipTests
-  artifacts:
-    when: always
-    reports:
-      dependency_scanning: back/target/dependency-check-report.gitlab.json
-    paths:
-      - back/target/dependency-check-report.html
 ################################
 # 5. DÉPLOIEMENT (SIMULATION)
 ################################

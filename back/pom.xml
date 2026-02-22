@@ -113,7 +113,7 @@
 
 				<configuration>
 					<nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
-					<nvdApiDelay>8000</nvdApiDelay>
+					<nvdApiDelay>10000</nvdApiDelay>
 					<failOnError>false</failOnError>
 					<format>HTML</format>
 					<format>GITLAB</format>
