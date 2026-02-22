@@ -64,6 +64,23 @@ sonarqube-check:
     - master
     - main
 
+
+  dependency-check:
+    stage: security_scan
+    image: maven:3.9-eclipse-temurin-17
+    tags:
+      - maven
+    script:
+      - cd back
+      # On génère le rapport sans faire échouer le build tout de suite
+      - mvn org.owasp:dependency-check-maven:check
+    artifacts:
+      name: "dependency-check-report"
+      paths:
+        - back/target/dependency-check-report.html
+      expire_in: 1 week
+
+
 ################################
 # 4. DÉPLOIEMENT (SIMULATION)
 ################################
