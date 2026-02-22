@@ -78,10 +78,10 @@ dependency-check:
     - mvn clean verify -DskipTests
   artifacts:
     when: always
-    name: "dependency-check-report"
+    reports:
+      dependency_scanning: back/target/dependency-check-report.gitlab.json
     paths:
       - back/target/dependency-check-report.html
-    expire_in: 1 week
 ################################
 # 5. DÉPLOIEMENT (SIMULATION)
 ################################
