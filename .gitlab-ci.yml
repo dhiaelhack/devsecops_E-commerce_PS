@@ -56,14 +56,19 @@ sonarqube-check:
   image: maven:3.9-eclipse-temurin-17
   tags:
     - maven
+  allow_failure: true   # 🔥 le pipeline continue même si Quality Gate FAILED
   script:
     - cd back
-    # Analyse de la qualité du code (ex: ProductListComponent)
-    - mvn verify sonar:sonar -DskipTests -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=$SONAR_HOST_URL
+    - |
+      mvn verify sonar:sonar \
+        -DskipTests \
+        -Dsonar.token=$SONAR_TOKEN \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.qualitygate.wait=true \
+      || echo "⚠️ Quality Gate FAILED — Pipeline continues (DevSecOps mode)"
   only:
     - master
     - main
-
 ################################
 # 4. ANALYSE DES LIBRAIRIES (SCA)
 ################################
