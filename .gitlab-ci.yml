@@ -75,18 +75,13 @@ dependency-check:
     - maven
   script:
     - cd back
-    # On ajoute --failAtEnd et on désactive les updates NVD qui causent le 404
-    - mvn org.owasp:dependency-check-maven:check 
-      -DnvdDatafeedUrl=https://jeremylong.github.io/DependencyCheck/merged.json 
-      -DautoUpdate=false 
-      -DfailOnError=false
+    - mvn clean verify -DskipTests
   artifacts:
     when: always
     name: "dependency-check-report"
     paths:
       - back/target/dependency-check-report.html
     expire_in: 1 week
-
 ################################
 # 5. DÉPLOIEMENT (SIMULATION)
 ################################
