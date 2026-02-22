@@ -65,24 +65,30 @@ sonarqube-check:
     - main
 
 
-  dependency-check:
-    stage: security_scan
-    image: maven:3.9-eclipse-temurin-17
-    tags:
-      - maven
-    script:
-      - cd back
-      # On génère le rapport sans faire échouer le build tout de suite
-      - mvn org.owasp:dependency-check-maven:check
-    artifacts:
-      name: "dependency-check-report"
-      paths:
-        - back/target/dependency-check-report.html
-      expire_in: 1 week
-
+################################
+# 4. ANALYSE DES LIBRAIRIES (OWASP)
+################################
+dependency-check:
+  stage: security_scan
+  image: maven:3.9-eclipse-temurin-17
+  tags:
+    - maven
+  script:
+    - cd back
+    # On ajoute --failAtEnd et on désactive les updates NVD qui causent le 404
+    - mvn org.owasp:dependency-check-maven:check 
+      -DnvdDatafeedUrl=https://jeremylong.github.io/DependencyCheck/merged.json 
+      -DautoUpdate=false 
+      -DfailOnError=false
+  artifacts:
+    when: always
+    name: "dependency-check-report"
+    paths:
+      - back/target/dependency-check-report.html
+    expire_in: 1 week
 
 ################################
-# 4. DÉPLOIEMENT (SIMULATION)
+# 5. DÉPLOIEMENT (SIMULATION)
 ################################
 deploy-job:
   stage: deploy
