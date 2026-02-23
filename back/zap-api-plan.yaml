@@ -1,0 +1,35 @@
+env:
+  contexts:
+    - name: backend
+      urls:
+        - http://172.17.0.1:8080
+      includePaths:
+        - http://172.17.0.1:8080.*
+
+  parameters:
+    failOnError: false
+    failOnWarning: false
+
+jobs:
+  - type: spider
+    parameters:
+      context: backend
+      maxDuration: 2
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 2
+
+  - type: activeScan
+    parameters:
+      context: backend
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportFile: security-reports/rapport_zap_backend.html
+
+  - type: report
+    parameters:
+      template: traditional-json
+      reportFile: security-reports/rapport_zap_backend.json
