@@ -86,49 +86,49 @@ dependency-check:
     paths:
       - back/target/dependency-check-report.html
 
-###########################################################
-# 5. SÉCURITÉ DYNAMIQUE (DAST) - OWASP ZAP
-###########################################################
-zap_vulnerability_scan:
+zap_vulnerability_scan_debug:
   stage: security_scan
   image:
     name: ghcr.io/zaproxy/zaproxy:stable
-    entrypoint: [""]  # permet d'exécuter directement des commandes shell
+    entrypoint: [""]  # IMPORTANT pour éviter l'entrypoint par défaut
   tags:
     - docker
   before_script:
-    # Crée le dossier local où les rapports seront stockés
     - mkdir -p $CI_PROJECT_DIR/security-reports
   script:
     # -------------------------------
     # 5.1 Scan Frontend (Angular)
     # -------------------------------
     - echo "=== Scan Frontend (Angular) ==="
-    - zap-baseline.py \
-        -t http://172.17.0.1:4200 \
-        -r $CI_PROJECT_DIR/security-reports/rapport_zap_front.html \
-        -J $CI_PROJECT_DIR/security-reports/rapport_zap_front.json \
-        || echo "⚠️ Frontend scan finished with warnings/errors"
-
-    # Liste le contenu du dossier pour vérifier que les fichiers sont créés
+    - /zap/zap-baseline.py \
+      -t http://172.17.0.1:4200 \
+      -r $CI_PROJECT_DIR/security-reports/rapport_zap_front.html \
+      -J $CI_PROJECT_DIR/security-reports/rapport_zap_front.json \
+      || echo "⚠️ Frontend scan finished with warnings/errors"
+    - echo "--- Contenu après scan Frontend ---"
     - ls -l $CI_PROJECT_DIR/security-reports
 
     # -------------------------------
-    # 5.2 Scan Backend (Spring Boot) via plan YAML
+    # 5.2 Scan Backend (Spring Boot)
     # -------------------------------
     - echo "=== Scan Backend (Spring Boot) ==="
-    - zap.sh -cmd -autorun back/zap-api-plan.yaml \
-        || echo "⚠️ Backend scan finished with warnings/errors"
-
-    # Liste le contenu pour vérifier que les fichiers backend sont créés
+    - /zap/zap-api-scan.py \
+      -t $CI_PROJECT_DIR/back/zap-api-plan.yaml \
+      -f openapi \
+      -r $CI_PROJECT_DIR/security-reports/rapport_zap_back.html \
+      -J $CI_PROJECT_DIR/security-reports/rapport_zap_back.json \
+      || echo "⚠️ Backend scan finished with warnings/errors"
+    - echo "--- Contenu après scan Backend ---"
     - ls -l $CI_PROJECT_DIR/security-reports
+
   artifacts:
     when: always
     paths:
-      - security-reports/
+      - $CI_PROJECT_DIR/security-reports/
     reports:
-      # JSON frontend pour GitLab SAST
-      sast: security-reports/rapport_zap_front.json
+      sast:
+        - $CI_PROJECT_DIR/security-reports/rapport_zap_front.json
+        - $CI_PROJECT_DIR/security-reports/rapport_zap_back.json
 ################################
 # 6. DÉPLOIEMENT (SIMULATION)
 ################################
