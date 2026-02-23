@@ -5,12 +5,13 @@ stages:
   - deploy
 
 variables:
+  # SonarQube
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
   SONAR_HOST_URL: "http://172.17.0.1:9000"
 
 ################################
-# 1. BUILD BACKEND
+# 1. COMPILATION DU BACKEND
 ################################
 build-back:
   stage: build
@@ -25,7 +26,7 @@ build-back:
       - back/target/
 
 ################################
-# 2. UNIT TESTS (WITH MONGO)
+# 2. TESTS UNITAIRES (AVEC MONGO)
 ################################
 unit-test-back:
   stage: test
@@ -46,7 +47,7 @@ unit-test-back:
       junit: back/target/surefire-reports/TEST-*.xml
 
 ################################
-# 3. SONARQUBE SAST
+# 3. ANALYSE DE SÉCURITÉ SONAR (SAST)
 ################################
 sonarqube-check:
   stage: security_scan
@@ -63,12 +64,9 @@ sonarqube-check:
         -Dsonar.host.url=$SONAR_HOST_URL \
         -Dsonar.qualitygate.wait=true \
       || echo "⚠️ Quality Gate FAILED — Pipeline continues"
-  only:
-    - master
-    - main
 
 ################################
-# 4. DEPENDENCY-CHECK (SCA)
+# 4. ANALYSE DES LIBRAIRIES (SCA)
 ################################
 dependency-check:
   stage: security_scan
@@ -85,9 +83,9 @@ dependency-check:
     paths:
       - back/target/dependency-check-report.html
 
-################################
-# 5. DAST - OWASP ZAP
-################################
+###########################################################
+# 5. SÉCURITÉ DYNAMIQUE (DAST) - OWASP ZAP
+###########################################################
 zap_vulnerability_scan:
   stage: security_scan
   image:
@@ -99,7 +97,7 @@ zap_vulnerability_scan:
     - mkdir -p security-reports
   script:
     # -------------------------------
-    # 5.1 - FRONTEND SCAN
+    # 5.1 Scan Frontend (Angular)
     # -------------------------------
     - zap-baseline.py \
       -t http://172.17.0.1:4200 \
@@ -107,13 +105,14 @@ zap_vulnerability_scan:
       -J security-reports/rapport_zap_front.json
 
     # -------------------------------
-    # 5.2 - BACKEND SCAN
+    # 5.2 Scan Backend (Spring Boot)
     # -------------------------------
     - zap-api-scan.py \
       -t back/zap-api-plan.yaml \
       -f openapi \
       -r security-reports/rapport_zap_back.html \
       -J security-reports/rapport_zap_back.json
+
   artifacts:
     when: always
     paths:
@@ -124,11 +123,11 @@ zap_vulnerability_scan:
         - security-reports/rapport_zap_back.json
 
 ################################
-# 6. DEPLOY (SIMULATION)
+# 6. DÉPLOIEMENT (SIMULATION)
 ################################
 deploy-job:
   stage: deploy
   tags:
     - docker
   script:
-    - echo "✅ Analyse de sécurité terminée. Prêt pour le déploiement de l'E-commerce PS."
+    - echo "Analyse de sécurité terminée. Prêt pour le déploiement de l'E-commerce PS."
