@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  # SonarQube
+  # Configuration pour SonarQube
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
   SONAR_HOST_URL: "http://172.17.0.1:9000"
@@ -64,6 +64,9 @@ sonarqube-check:
         -Dsonar.host.url=$SONAR_HOST_URL \
         -Dsonar.qualitygate.wait=true \
       || echo "⚠️ Quality Gate FAILED — Pipeline continues"
+  only:
+    - master
+    - main
 
 ################################
 # 4. ANALYSE DES LIBRAIRIES (SCA)
@@ -83,44 +86,44 @@ dependency-check:
     paths:
       - back/target/dependency-check-report.html
 
-###########################################################
+################################
 # 5. SÉCURITÉ DYNAMIQUE (DAST) - OWASP ZAP
-###########################################################
+################################
 zap_vulnerability_scan:
   stage: security_scan
   image:
     name: ghcr.io/zaproxy/zaproxy:stable
-    entrypoint: [""]
+    entrypoint: [""]  
   tags:
     - docker
   before_script:
-    - mkdir -p security-reports
+    - mkdir -p $CI_PROJECT_DIR/security-reports
   script:
-    # -------------------------------
-    # 5.1 Scan Frontend (Angular)
-    # -------------------------------
+    - echo "=== Scan Frontend (Angular) ==="
     - zap-baseline.py \
-      -t http://172.17.0.1:4200 \
-      -r security-reports/rapport_zap_front.html \
-      -J security-reports/rapport_zap_front.json
+        -t http://172.17.0.1:4200 \
+        -r $CI_PROJECT_DIR/security-reports/rapport_zap_front.html \
+        -J $CI_PROJECT_DIR/security-reports/rapport_zap_front.json
 
-    # -------------------------------
-    # 5.2 Scan Backend (Spring Boot)
-    # -------------------------------
+    - echo "=== Scan Backend (Spring Boot) ==="
     - zap-api-scan.py \
-      -t back/zap-api-plan.yaml \
-      -f openapi \
-      -r security-reports/rapport_zap_back.html \
-      -J security-reports/rapport_zap_back.json
+        -t $CI_PROJECT_DIR/back/zap-api-plan.yaml \
+        -f openapi \
+        -r $CI_PROJECT_DIR/security-reports/rapport_zap_back.html \
+        -J $CI_PROJECT_DIR/security-reports/rapport_zap_back.json
+
+    # DEBUG pour voir les fichiers générés
+    - echo "=== Contenu du dossier security-reports ==="
+    - ls -l $CI_PROJECT_DIR/security-reports
+    - echo "=== Arborescence complète pour debug ==="
+    - tree -L 2 $CI_PROJECT_DIR || echo "tree command not found"
 
   artifacts:
     when: always
     paths:
-      - security-reports/
+      - $CI_PROJECT_DIR/security-reports/
     reports:
-      sast:
-        - security-reports/rapport_zap_front.json
-        - security-reports/rapport_zap_back.json
+      sast: $CI_PROJECT_DIR/security-reports/rapport_zap_front.json
 
 ################################
 # 6. DÉPLOIEMENT (SIMULATION)
@@ -130,4 +133,4 @@ deploy-job:
   tags:
     - docker
   script:
-    - echo "Analyse de sécurité terminée. Prêt pour le déploiement de l'E-commerce PS."
+    - echo "✅ Analyse de sécurité terminée. Prêt pour le déploiement de l'E-commerce PS."
